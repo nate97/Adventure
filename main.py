@@ -72,9 +72,9 @@ class MyApp(ShowBase):
         self.setupColliders()
         
         #self.toggle_collisions()
-        
-        
-        
+
+
+
     def loadPlayerModel(self):
         self.player = loader.loadModel("img/flat.x")
         self.player.reparentTo(render)
@@ -82,8 +82,8 @@ class MyApp(ShowBase):
         self.player.setScale(1,1,1)
         self.player.setColor(self.localColor)
         self.player.setCollideMask(BitMask32.allOff())
-
-
+        
+        
         # Add physical collision object to player
         self.playerCollider = self.player.attachNewNode(CollisionNode('playercnode'))
         self.playerCollider.node().addSolid(CollisionSphere(0, 0, 0, 1))
@@ -91,8 +91,9 @@ class MyApp(ShowBase):
         #base.cTrav.addCollider(self.playerCollider, self.collisionHandler)
         self.playerCollider.node().setFromCollideMask(self.WALL_MASK)
         self.playerCollider.node().setIntoCollideMask(BitMask32.allOff())
-        
 
+        
+        
         # Sensor collision
         self.playerSensor = self.player.attachNewNode(CollisionNode('playersensor'))
         cs=CollisionSphere(0, 0, 0, 1.2)
@@ -105,13 +106,16 @@ class MyApp(ShowBase):
 
 
         # Temp
-        frowneyModel = loader.loadModel('frowney')
-        frowneyModel.reparentTo(render)
-        frowneyModel.setPos(2, -25,0)
+        doorNode = render.attachNewNode("Dummy door")
+        doorNode.reparentTo(render)
+        doorNode.setPos(0, -25, 0)
         #** ...then we set the collision geometry; we need first a CollisionNode...
-        frowneyCollider = frowneyModel.attachNewNode(CollisionNode('frowneycnode'))
+        doorSensor = doorNode.attachNewNode(CollisionNode('doorcnode'))
         #...then we add to that our CollisionSphere geometry primitive.
-        frowneyCollider.node().addSolid(CollisionSphere(0, 0, 0, 1))
+        doorSensor.node().addSolid(CollisionTube(-14, 0, 0, 14, 0, 0, 1.5))
+        doorSensor.node().setFromCollideMask(BitMask32.allOff())
+        doorSensor.node().setIntoCollideMask(self.DOOR_MASK)
+        doorSensor.show()
 
 
 
@@ -159,7 +163,7 @@ class MyApp(ShowBase):
         wallcollider.node().setIntoCollideMask(self.WALL_MASK)
 
 
-  
+
     def loadRoom2(self):
         self.localColor = self.colors['green']
         self.player.setPos(0,-20,1)
@@ -174,7 +178,7 @@ class MyApp(ShowBase):
         roomcol.setColor(self.localColor)
 
 
- 
+
     def unloadRoom(self):
         self.dummyRoom.removeNode()
 
@@ -199,7 +203,7 @@ class MyApp(ShowBase):
         for i in range(self.collisionHandler.getNumEntries()):
             # we get here the n-th object collided (we know it is frowney for sure) - it is a CollisionEntry object (look into the manual to see its methods)
             entry = self.collisionHandler.getEntry(i)
-            collNode = str(entry.getToNodePath())
+            collNode = str(entry.getIntoNodePath())
             print collNode
             
             # and we skip out cos we ain't other things to do here.

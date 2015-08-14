@@ -102,9 +102,9 @@ class MyApp(ShowBase):
         self.playerSensor.node().setIntoCollideMask(BitMask32.allOff())
         # as said above, to act correctly we need to make clear to the system that this is just a sensor, with no solid parts
         cs.setTangible(0)
-
-
-
+        
+        
+        
         # Temp
         doorNode = render.attachNewNode("Dummy door")
         doorNode.reparentTo(render)
@@ -116,9 +116,9 @@ class MyApp(ShowBase):
         doorSensor.node().setFromCollideMask(BitMask32.allOff())
         doorSensor.node().setIntoCollideMask(self.DOOR_MASK)
         doorSensor.show()
-
-
-
+        
+        
+        
     # Records the state of the arrow keys
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -205,6 +205,9 @@ class MyApp(ShowBase):
             entry = self.collisionHandler.getEntry(i)
             collNode = str(entry.getIntoNodePath())
             print collNode
+            if collNode == 'render/Dummy door/doorcnode':
+                self.unloadRoom()
+                self.loadRoom2()
             
             # and we skip out cos we ain't other things to do here.
             if task: return task.cont

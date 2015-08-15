@@ -1,0 +1,177 @@
+<CoordinateSystem> { Y-Up-Left }
+
+<Comment> {
+  "x2egg flat.x flat.egg"
+}
+<Group> Root {
+  <Collide> { Polyset keep descend } 
+  <Transform> {
+    <Matrix4> {
+      1 0 0 0
+      0 0 1 0
+      0 1 0 0
+      0 0 0 1
+    }
+  }
+  <Group> Cube {
+    <Collide> { Polyset keep descend }
+    <Transform> {
+      <Matrix4> {
+        1 0 0 0
+        0 1 0 0
+        0 0 0.001 0
+        0 0 0 1
+      }
+    }
+    <Group> {
+      <VertexPool> vpool1 {
+        <Vertex> 0 {
+          1 -0.001 1
+          <Normal> { 0 -1 0 }
+        }
+        <Vertex> 1 {
+          1 -0.001 -1
+          <Normal> { 0 -1 0 }
+        }
+        <Vertex> 2 {
+          -1 -0.001 -1
+          <Normal> { 0 -1 0 }
+        }
+        <Vertex> 3 {
+          -1 -0.001 1
+          <Normal> { 0 -1 0 }
+        }
+        <Vertex> 4 {
+          1 0.001 0.999999
+          <Normal> { 0 1 0 }
+        }
+        <Vertex> 5 {
+          -1 0.001 1
+          <Normal> { 0 1 0 }
+        }
+        <Vertex> 6 {
+          -1 0.001 -1
+          <Normal> { 0 1 0 }
+        }
+        <Vertex> 7 {
+          0.999999 0.001 -1
+          <Normal> { 0 1 0 }
+        }
+        <Vertex> 8 {
+          1 -0.001 1
+          <Normal> { 1 0 0 }
+        }
+        <Vertex> 9 {
+          1 0.001 0.999999
+          <Normal> { 1 0 0 }
+        }
+        <Vertex> 10 {
+          0.999999 0.001 -1
+          <Normal> { 1 0 0 }
+        }
+        <Vertex> 11 {
+          1 -0.001 -1
+          <Normal> { 1 0 0 }
+        }
+        <Vertex> 12 {
+          1 -0.001 -1
+          <Normal> { 0 0 -1 }
+        }
+        <Vertex> 13 {
+          0.999999 0.001 -1
+          <Normal> { 0 0 -1 }
+        }
+        <Vertex> 14 {
+          -1 0.001 -1
+          <Normal> { 0 0 -1 }
+        }
+        <Vertex> 15 {
+          -1 -0.001 -1
+          <Normal> { 0 0 -1 }
+        }
+        <Vertex> 16 {
+          -1 -0.001 -1
+          <Normal> { -1 0 0 }
+        }
+        <Vertex> 17 {
+          -1 0.001 -1
+          <Normal> { -1 0 0 }
+        }
+        <Vertex> 18 {
+          -1 0.001 1
+          <Normal> { -1 0 0 }
+        }
+        <Vertex> 19 {
+          -1 -0.001 1
+          <Normal> { -1 0 0 }
+        }
+        <Vertex> 20 {
+          1 0.001 0.999999
+          <Normal> { 0 0 1 }
+        }
+        <Vertex> 21 {
+          1 -0.001 1
+          <Normal> { 0 0 1 }
+        }
+        <Vertex> 22 {
+          -1 -0.001 1
+          <Normal> { 0 0 1 }
+        }
+        <Vertex> 23 {
+          -1 0.001 1
+          <Normal> { 0 0 1 }
+        }
+        <Vertex> 24 {
+          -1 -0.001 -1
+          <Normal> { -0.577302 -0.577446 -0.577302 }
+        }
+        <Vertex> 25 {
+          -1 -0.001 1
+          <Normal> { -0.577398 -0.577254 0.577398 }
+        }
+        <Vertex> 26 {
+          -1 0.001 -1
+          <Normal> { -0.577398 0.577254 -0.577398 }
+        }
+        <Vertex> 27 {
+          -1 0.001 1
+          <Normal> { -0.577302 0.577447 0.577302 }
+        }
+        <Vertex> 28 {
+          0.999999 0.001 -1
+          <Normal> { 0.57735 0.57735 -0.57735 }
+        }
+        <Vertex> 29 {
+          1 -0.001 -1
+          <Normal> { 0.57735 -0.57735 -0.57735 }
+        }
+        <Vertex> 30 {
+          1 -0.001 1
+          <Normal> { 0.577447 -0.577158 0.577446 }
+        }
+        <Vertex> 31 {
+          1 0.001 0.999999
+          <Normal> { 0.577254 0.577543 0.577254 }
+        }
+      }
+      <Polygon> {
+        <VertexRef> { 30 29 24 25 <Ref> { vpool1 } }
+      }
+      <Polygon> {
+        <VertexRef> { 31 27 26 28 <Ref> { vpool1 } }
+      }
+      <Polygon> {
+        <VertexRef> { 30 31 28 29 <Ref> { vpool1 } }
+      }
+      <Polygon> {
+        <VertexRef> { 29 28 26 24 <Ref> { vpool1 } }
+      }
+      <Polygon> {
+        <VertexRef> { 24 26 27 25 <Ref> { vpool1 } }
+      }
+      <Polygon> {
+        <VertexRef> { 31 30 25 27 <Ref> { vpool1 } }
+      }
+    }
+  }
+}

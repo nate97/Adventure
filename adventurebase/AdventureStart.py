@@ -17,8 +17,14 @@ class MyApp(ShowBase):
 
         ###### Collisions ######
         base.cTrav = CollisionTraverser()
-        self.collisionHandler = CollisionHandlerQueue()
+        self.collisionHandler = CollisionHandlerEvent()
         self.wallHandler = CollisionHandlerPusher()
+        
+        self.collisionHandler.addInPattern('%fn-into-%in')
+
+        # this is on the other hand the relative call for the OUT event, as is when the FROM object (heart) goes OUT the INTO oject (heart).
+        self.collisionHandler.addOutPattern('%fn-out-%in')
+
         
         # localPlayer globals
         self.localColor = Colors['black']
@@ -41,10 +47,18 @@ class MyApp(ShowBase):
         self.accept("arrow_down-up", self.setKey, ["backward", False])
         
         
+
+        self.accept('playersensor-into-doorcnode', self.test)
+        self.accept('playersensor-outof-doorcnode', self.test)
+        
+        
+        
+
+        
         taskMgr.add(self.move, "moveTask")
         
         #** let start the collision check loop, called each 20th of second
-        taskMgr.add(self.traverseTask, "tsk_traverse")
+        #taskMgr.add(self.traverseTask, "tsk_traverse")
         
         self.loadPlayerModel()
         
@@ -54,6 +68,9 @@ class MyApp(ShowBase):
         
         #self.toggle_collisions()
 
+
+    def test(self, wat):
+        print 'test???'
 
 
     def loadPlayerModel(self):
@@ -85,18 +102,7 @@ class MyApp(ShowBase):
         cs.setTangible(0)
         
         
-        
-        # Temp
-        doorNode = render.attachNewNode("Dummy door")
-        doorNode.reparentTo(render)
-        doorNode.setPos(0, -25, 0)
-        #** ...then we set the collision geometry; we need first a CollisionNode...
-        doorSensor = doorNode.attachNewNode(CollisionNode('doorcnode'))
-        #...then we add to that our CollisionSphere geometry primitive.
-        doorSensor.node().addSolid(CollisionTube(-14, 0, 0, 14, 0, 0, 1.5))
-        doorSensor.node().setFromCollideMask(BitMask32.allOff())
-        doorSensor.node().setIntoCollideMask(DOOR_MASK)
-        doorSensor.show()
+
         
         
         
@@ -144,6 +150,22 @@ class MyApp(ShowBase):
         wallcollider.node().setIntoCollideMask(WALL_MASK)
 
 
+        
+        # Temp
+        doorNode = render.attachNewNode("Dummy door")
+        doorNode.reparentTo(self.dummyRoom)
+        doorNode.setPos(0, -25, 0)
+        #** ...then we set the collision geometry; we need first a CollisionNode...
+        doorSensor = doorNode.attachNewNode(CollisionNode('doorcnode'))
+        #...then we add to that our CollisionSphere geometry primitive.
+        doorSensor.node().addSolid(CollisionTube(-14, 0, 0, 14, 0, 0, 1.5))
+        doorSensor.node().setFromCollideMask(BitMask32.allOff())
+        doorSensor.node().setIntoCollideMask(DOOR_MASK)
+        doorSensor.show()
+
+
+
+
 
     def loadRoom2(self):
         self.localColor = Colors['green']
@@ -173,6 +195,7 @@ class MyApp(ShowBase):
     def setupColliders(self):
         self.wallHandler.addCollider(self.playerCollider, self.player) 
 
+
         # Adding to trav turns it into a from object( moving object )
         base.cTrav.addCollider(self.playerCollider, self.wallHandler)
 
@@ -191,7 +214,7 @@ class MyApp(ShowBase):
             entry = self.collisionHandler.getEntry(i)
             collNode = str(entry.getIntoNodePath())
             print collNode
-            if collNode == 'render/Dummy door/doorcnode':
+            if collNode == 'render/Dummy room/Dummy door/doorcnode':
                 self.unloadRoom()
                 self.loadRoom2()
             

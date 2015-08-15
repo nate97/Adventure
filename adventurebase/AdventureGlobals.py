@@ -17,7 +17,8 @@ Colors = {'black':(0,0,0,1),
                 }
 # All models for each rooms
 Rooms = {'room_0':(Resources + 'room_start_yellow.egg'),
-         'room_1': (Resources + 'room_yellow.egg')
+         'room_1': (Resources + 'room_yellow.egg'),
+         'room_2': (Resources + 'room_green.egg')
          }
 # Settings for the player
 PlayerModel = (Resources + 'player.egg')

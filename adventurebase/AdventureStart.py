@@ -47,13 +47,9 @@ class MyApp(ShowBase):
         self.accept("arrow_down-up", self.setKey, ["backward", False])
         
         
-
-        self.accept('playersensor-into-doorcnode', self.test)
-        self.accept('playersensor-outof-doorcnode', self.test)
+        #self.accept('playersensor-into-doorcnode', self.loadRoom2)
+        #self.accept('playersensor-outof-doorcnode', self.test)
         
-        
-        
-
         
         taskMgr.add(self.move, "moveTask")
         
@@ -62,15 +58,12 @@ class MyApp(ShowBase):
         
         self.loadPlayerModel()
         
-        self.loadRoom()
+        self.loadRoom('example')
         
         self.setupColliders()
         
         #self.toggle_collisions()
 
-
-    def test(self, wat):
-        print 'test???'
 
 
     def loadPlayerModel(self):
@@ -89,7 +82,6 @@ class MyApp(ShowBase):
         #base.cTrav.addCollider(self.playerCollider, self.collisionHandler)
         self.playerCollider.node().setFromCollideMask(WALL_MASK)
         self.playerCollider.node().setIntoCollideMask(BitMask32.allOff())
-
         
         
         # Sensor collision
@@ -100,12 +92,9 @@ class MyApp(ShowBase):
         self.playerSensor.node().setIntoCollideMask(BitMask32.allOff())
         # as said above, to act correctly we need to make clear to the system that this is just a sensor, with no solid parts
         cs.setTangible(0)
-        
-        
 
-        
-        
-        
+
+
     # Records the state of the arrow keys
     def setKey(self, key, value):
         self.keyMap[key] = value
@@ -129,9 +118,14 @@ class MyApp(ShowBase):
 
 
 
-    def loadRoom(self):
+    def loadRoom(self, test):
+        print test
+        
+        # TEMP
+        self.unloadRoom()
+        
         self.localColor = Colors['yellow']
-        self.player.setPos(0,-10,1)
+        self.player.setY(-24)
         self.player.setColor(self.localColor)
 
         self.dummyRoom = render.attachNewNode("Dummy room")
@@ -154,32 +148,36 @@ class MyApp(ShowBase):
         # Temp
         doorNode = render.attachNewNode("Dummy door")
         doorNode.reparentTo(self.dummyRoom)
-        doorNode.setPos(0, -25, 0)
+        doorNode.setPos(0, -27, 0)
         #** ...then we set the collision geometry; we need first a CollisionNode...
-        doorSensor = doorNode.attachNewNode(CollisionNode('doorcnode'))
+        doorSensor = doorNode.attachNewNode(CollisionNode('doorcnode_0'))
         #...then we add to that our CollisionSphere geometry primitive.
         doorSensor.node().addSolid(CollisionTube(-14, 0, 0, 14, 0, 0, 1.5))
         doorSensor.node().setFromCollideMask(BitMask32.allOff())
         doorSensor.node().setIntoCollideMask(DOOR_MASK)
         doorSensor.show()
 
+        self.accept('playersensor-into-doorcnode_0', self.loadRoom2)
 
 
 
-
-    def loadRoom2(self):
+    def loadRoom2(self, test):
+        print test
+        
+        # TEMP
+        self.unloadRoom()
+        
         self.localColor = Colors['green']
-        self.player.setPos(0,-20,1)
+        self.player.setY(24)
         self.player.setColor(self.localColor)
 
         self.dummyRoom = render.attachNewNode("Dummy room")
  
-        roomcol = loader.loadModel(Rooms['room_1'])
+        roomcol = loader.loadModel(Rooms['room_2'])
         roomcol.reparentTo(self.dummyRoom)
         roomcol.setScale(7,3.5,1)
         roomcol.setPos(0,0,0)
         roomcol.setColor(self.localColor)
-
 
 
         wallcollider=roomcol.find("**/Plane")
@@ -187,41 +185,39 @@ class MyApp(ShowBase):
 
 
 
+        # Temp
+        doorNode = render.attachNewNode("Dummy door")
+        doorNode.reparentTo(self.dummyRoom)
+        doorNode.setPos(0, 27, 0)
+        #** ...then we set the collision geometry; we need first a CollisionNode...
+        doorSensor = doorNode.attachNewNode(CollisionNode('doorcnode_1'))
+        #...then we add to that our CollisionSphere geometry primitive.
+        doorSensor.node().addSolid(CollisionTube(-14, 0, 0, 14, 0, 0, 1.5))
+        doorSensor.node().setFromCollideMask(BitMask32.allOff())
+        doorSensor.node().setIntoCollideMask(DOOR_MASK)
+        doorSensor.show()
+
+        self.accept('playersensor-into-doorcnode_1', self.loadRoom)
+
+
+
     def unloadRoom(self):
-        self.dummyRoom.removeNode()
+        try:
+            self.dummyRoom.removeNode()
+        except:
+            print 'Nothing 2 remove'
 
- 
- 
+
+
     def setupColliders(self):
+        # Tell collider what to check for
         self.wallHandler.addCollider(self.playerCollider, self.player) 
-
 
         # Adding to trav turns it into a from object( moving object )
         base.cTrav.addCollider(self.playerCollider, self.wallHandler)
 
         # Adding to trav turns it into a from object( moving object )
         base.cTrav.addCollider(self.playerSensor, self.collisionHandler)
- 
-
-
-
-    #** This is the loop periodically checked to find out if the have been collisions - it is fired by the taskMgr.add function set below.
-    def traverseTask(self, task=None):
-
-        self.collisionHandler.sortEntries()
-        for i in range(self.collisionHandler.getNumEntries()):
-            # we get here the n-th object collided (we know it is frowney for sure) - it is a CollisionEntry object (look into the manual to see its methods)
-            entry = self.collisionHandler.getEntry(i)
-            collNode = str(entry.getIntoNodePath())
-            print collNode
-            if collNode == 'render/Dummy room/Dummy door/doorcnode':
-                self.unloadRoom()
-                self.loadRoom2()
-            
-            # and we skip out cos we ain't other things to do here.
-            if task: return task.cont
-
-        if task: return task.cont
 
 
 

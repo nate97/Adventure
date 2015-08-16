@@ -129,7 +129,7 @@ class MyApp(ShowBase):
 
     ### Creates the object with the neccisary properties and appends ###
     ### the object into a dictionary so we can easily modify it      ###
-    def createGenericObject(self,type, name, model, pos, hpr, scale, color):
+    def createGenericObject(self, type, name, model, pos, hpr, scale, color):
         self.models[name] = loader.loadModel(model)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)

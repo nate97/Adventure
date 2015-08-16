@@ -58,13 +58,10 @@ class MyApp(ShowBase):
 
         dnafile = '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
         
-        
         self.loadPlayerModel()
         
         self.createRoom(dnafile)
 
-
-        
         self.setupColliders()
         
         #self.toggle_collisions()
@@ -125,78 +122,133 @@ class MyApp(ShowBase):
 
     # Dose basic setup for the next room and keeps
     # the player avatar in place!
-    def initTransition(self, dnafile, tunnel, coll):
+    def transition(self, newroom, exittunnel, coll):
         
-        self.createRoom(dnafile)
-
-        # Get position of tunnel the player is leaving
+        self.createRoom(newroom)
         
-        tunnelpos = self.models[tunnel].getY()
+        # Get position of exittunnel the player is leaving
+        tunnelpos = self.models[exittunnel].getY()
         if tunnelpos > self.player.getY():
-            self.player.setY(self.models[tunnel].getY() - 5)
+            self.player.setY(self.models[exittunnel].getY() - 5)
         else:
-            self.player.setY(self.models[tunnel].getY() + 5)
+            self.player.setY(self.models[exittunnel].getY() + 5)
 
 
 
     ### Builds the room the player is currently in ###
     def createRoom(self, dnafile):
         
-        # First things first make sure we clear everything!
+        ### First things first make sure everything ###
+        ### in the scene is already clear           ###
         self.destroyRoom()
         
-        
-        ### Open the dna file ###
+        ### We open the dna file ###
         with open(dnafile, 'r') as f:
             dna = yaml.load(f)
 
-        ### Iterate over all the objects in the dna file. ###
-        ### Remember we're doing this in a FOR LOOP!!!    ###
+        ### Iterate over objects in the dna file.    ###
+        ### Remember we're doing this in a FOR LOOP! ###
         for nodes in dna:
-            print nodes
             
-            ### COMMON PROPERTIES ###
+            # Setup default properties
+            type = None
+            name = ''
+            model = ''
+            pos = (0,0,0)
+            hpr = (0,0,0)
+            scale = (1)
+            color = (1)
+            exittunnel = None
+            newroom = None
             
+            
+            ### REQUIRED PROPERTIES ###
             type = dna[nodes]['type']
             
             name = dna[nodes]['name']
             
-            model = dna[nodes]['model']
             
-            pos_list = dna[nodes]['pos']
-            pos = tuple(pos_list)
-            
-            scale_list = dna[nodes]['scale']
-            scale = tuple(scale_list)
-            
-            color_str = dna[nodes]['color']
-            color = Colors[color_str]
+            ### OPTIONAL PROPERTIES ###
+            if 'model' in dna[nodes]:
+                model = dna[nodes]['model']
+                
+            if 'pos' in dna[nodes]:
+                pos_list = dna[nodes]['pos']
+                pos = tuple(pos_list)
+                
+            if 'hpr' in dna[nodes]:
+                hpr_list = dna[nodes]['hpr']
+                hpr = tuple(hpr_list)
+                
+            if 'scale' in dna[nodes]:
+                scale_list = dna[nodes]['scale']
+                scale = tuple(scale_list)
+                
+            if 'color' in dna[nodes]:
+                color_str = dna[nodes]['color']
+                color = Colors[color_str]
+                                
+            if 'exittunnel' in dna[nodes]:
+                exittunnel = dna[nodes]['exittunnel']
+                
+            if 'newroom' in dna[nodes]:
+                newroom = dna[nodes]['newroom']
 
 
-            ### SPECIAL PROPERTIES ###
+            # Call the first method into the process of 
+            # adding the object into the game
+            self.prepareNode(type, name, model, pos, hpr, scale, color, exittunnel, newroom)
+
+
+
+    def prepareNode(self, type, name, model, pos, hpr, scale, color, exittunnel, newroom):
+        print 'Preparing node'
+        print (type, name, model, pos, hpr, scale, color, exittunnel, newroom)
+
+        ### This is so we call the corrosponding methods based ###
+        ### on what kind of object we are going to load        ###
+
+        # If the object is a tunnel...
+        if type == 'tunnel':
+            self.createDoor(type, name, pos, hpr, exittunnel, newroom)
             
-            
+        # If the type of the object is not a tunnel...
+        else:
+            self.createGenericObject(type, name, model, pos, hpr, scale, color)
+
+            # TEMPORARY
             if type == 'room':
-                try:
-                    self.player.setColor(color)
-                except:pass
-            
-            
-            if type == 'door':
-                print 'Adding collision'
+                self.localColor = color
+                self.player.setColor(self.localColor)
 
-                coll_list = dna[nodes]['collision']
-                collision = tuple(coll_list)
+    ### Creates the object with the neccisary properties and appends ###
+    ### the object into a dictionary so we can easily modify it      ###
+    def createGenericObject(self, type, name, model, pos, hpr, scale, color):
+        self.models[name] = loader.loadModel(model)
+        self.models[name].reparentTo(render)
+        self.models[name].setPos(pos)
+        self.models[name].setHpr(hpr)
+        self.models[name].setScale(scale)
+        self.models[name].setColor(color)
 
-                moveto_room = dna[nodes]['room']
-                
-                tunnel = dna[nodes]['tunnel']
-                
-                self.createGraphicNode(name, type, model, pos, scale, color, collision, moveto_room, tunnel)
 
-            else:
-                # Create the node!!!
-                self.createGraphicNode(name, type, model, pos, scale, color)
+
+    def createDoor(self, type, name, pos, hpr, exittunnel, newroom):
+        self.models[name] = render.attachNewNode(name)
+        self.models[name].reparentTo(render)
+        self.models[name].setPos(pos)
+        self.models[name].setHpr(hpr)
+        
+        # Set the collision geometry; we need first a CollisionNode
+        sensor = self.models[name].attachNewNode(CollisionNode(name))
+        # We add that to our CollisionSphere geometry primitive
+        sensor.node().addSolid(CollisionTube(-14,0,0,14,0,0,1.5))
+        sensor.node().setFromCollideMask(BitMask32.allOff())
+        sensor.node().setIntoCollideMask(DOOR_MASK)
+        sensor.show()
+        
+        # Collision logic
+        self.accept('playersensor-into-' + name, self.transition, [newroom, exittunnel])
 
 
 
@@ -204,38 +256,6 @@ class MyApp(ShowBase):
     def destroyRoom(self):
         for nodes in self.models:
             self.models[nodes].removeNode()
-
-
-
-    ### Creates the object with the neccisary properties and appends ###
-    ### the object into a dictionary so we can easily modify it      ###
-    ### later on in the game.                                        ###
-    def createGraphicNode(self, name, type, model, pos, scale, color, collision = None, moveto_room = None, tunnel = None):
-
-            # Load a collision node
-            if collision != None:
-                self.models[name] = render.attachNewNode(name)
-                self.models[name].reparentTo(render)
-                self.models[name].setPos(pos)
-                
-                # then we set the collision geometry; we need first a CollisionNode
-                sensor = self.models[name].attachNewNode(CollisionNode(name))
-                #...then we add to that our CollisionSphere geometry primitive.
-                sensor.node().addSolid(CollisionTube(-14,0,0,14,0,0,1.5))
-                sensor.node().setFromCollideMask(BitMask32.allOff())
-                sensor.node().setIntoCollideMask(DOOR_MASK)
-                sensor.show()
-
-                self.accept('playersensor-into-' + name, self.initTransition, [moveto_room, tunnel])
-
-
-            # Load a default graphical node
-            else:
-                self.models[name] = loader.loadModel(model)
-                self.models[name].reparentTo(render)
-                self.models[name].setPos(pos)
-                self.models[name].setScale(scale)
-                self.models[name].setColor(color)
 
 
 

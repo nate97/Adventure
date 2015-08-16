@@ -22,11 +22,10 @@ room_tunnel_0:
 room_tunnel_1:
     type: 'tunnel'
     name: 'tunnelcnode_1'
-
-    pos: [0, 27, 1]
+    pos: [0, 0, 1]
     scale: [1, 1, 1]
-    exittunnel: 'tunnelcnode_2'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'
+    exittunnel: 'tunnelcnode_3'
+    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow.yaml'
 
 
 
@@ -36,7 +35,7 @@ key_yellow:
     model: '/home/nathan/Documents/Git/Adventure/resources/player.egg'
     pos: [10,-15,1]
     scale: [1, 1, 1]
-    color: 'black'
+    color: 'green'
     
     
     

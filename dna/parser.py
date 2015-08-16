@@ -45,6 +45,17 @@ class MyApp(ShowBase):
     def transition(self, newroom, exittunnel, coll):
         pass
 
+        self.createRoom(dnafile)
+
+        # Get position of exittunnel the player is leaving
+        
+        tunnelpos = self.models[exittunnel].getY()
+        if tunnelpos > self.player.getY():
+            self.player.setY(self.models[exittunnel].getY() - 5)
+        else:
+            self.player.setY(self.models[exittunnel].getY() + 5)
+
+
 
     ### Builds the room the player is currently in ###
     def createRoom(self, dnafile):
@@ -58,6 +69,8 @@ class MyApp(ShowBase):
         for nodes in dna:
             
             # Setup default properties
+            type = None
+            name = ''
             model = ''
             pos = (0,0,0)
             hpr = (0,0,0)
@@ -110,8 +123,6 @@ class MyApp(ShowBase):
         print 'Preparing node'
         print (type, name, model, pos, hpr, scale, color, exittunnel, newroom)
 
-
-
         ### This is so we call the corrosponding methods based ###
         ### on what kind of object we are going to load        ###
 
@@ -122,8 +133,6 @@ class MyApp(ShowBase):
         # If the type of the object is not a tunnel...
         else:
             self.createGenericObject(type, name, model, pos, hpr, scale, color)
-
-
 
 
 

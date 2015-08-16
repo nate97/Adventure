@@ -14,6 +14,5 @@ room_tunnel_2:
     name: 'tunnelcnode_2'
     pos: [0, 27, 1]
     scale: [1, 1, 1]
-    collisionbounds: [-14,0,0,14,0,0,1.5]
     exittunnel: 'tunnelcnode_0'
     newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'

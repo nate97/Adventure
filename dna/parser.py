@@ -8,6 +8,7 @@ import yaml
 
 
 
+# Globals #
 Colors = {'black':(0,0,0,1),
                 'white': (1,1,1,1),
                 'gray':(0.6,0.6,0.6,1),
@@ -18,7 +19,6 @@ Colors = {'black':(0,0,0,1),
                 'pink':(1,0.5,0.5,1),
                 'yellow':(1,1,0,1)
                 }
-
 
 
 class MyApp(ShowBase):
@@ -42,6 +42,8 @@ class MyApp(ShowBase):
 
 
 
+    def transition(self, newroom, exittunnel, coll):
+        pass
 
 
     ### Builds the room the player is currently in ###
@@ -51,22 +53,21 @@ class MyApp(ShowBase):
         with open(dnafile, 'r') as f:
             dna = yaml.load(f)
 
-        ### Iterate over all the objects in the dna file. ###
-        ### Remember we're doing this in a FOR LOOP!!!    ###
+        ### Iterate over objects in the dna file.    ###
+        ### Remember we're doing this in a FOR LOOP! ###
         for nodes in dna:
             
             # Setup default properties
-            model = None
-            pos = None
-            hpr = None
-            scale = None
-            color = None
-            collisionbounds = None
+            model = ''
+            pos = (0,0,0)
+            hpr = (0,0,0)
+            scale = (1)
+            color = (1)
             exittunnel = None
             newroom = None
             
             
-            ### COMMON PROPERTIES ###
+            ### REQUIRED PROPERTIES ###
             type = dna[nodes]['type']
             
             name = dna[nodes]['name']
@@ -91,11 +92,7 @@ class MyApp(ShowBase):
             if 'color' in dna[nodes]:
                 color_str = dna[nodes]['color']
                 color = Colors[color_str]
-                
-            if 'collisionbounds' in dna[nodes]:
-                collisionbounds_list = dna[nodes]['collisionbounds']
-                collisionbounds = tuple(collisionbounds_list)
-                
+                                
             if 'exittunnel' in dna[nodes]:
                 exittunnel = dna[nodes]['exittunnel']
                 
@@ -103,30 +100,50 @@ class MyApp(ShowBase):
                 newroom = dna[nodes]['newroom']
 
 
-            self.prepareNode(type, name, model, pos, hpr, scale, color, collisionbounds, exittunnel, newroom)
+            # Call the first method into the process of 
+            # adding the object into the game
+            self.prepareNode(type, name, model, pos, hpr, scale, color, exittunnel, newroom)
 
 
 
-    def prepareNode(self, type, name, model, pos, hpr, scale, color, collisionbounds, exittunnel, newroom):
+    def prepareNode(self, type, name, model, pos, hpr, scale, color, exittunnel, newroom):
         print 'Preparing node'
-        print (type, name, model, pos, hpr, scale, color, collisionbounds, exittunnel, newroom)
+        print (type, name, model, pos, hpr, scale, color, exittunnel, newroom)
+
+
+
+        ### This is so we call the corrosponding methods based ###
+        ### on what kind of object we are going to load ###
+
+        # If the object is a tunnel...
+        if type == 'tunnel':
+            self.createDoorNode(type, name, pos, hpr, exittunnel, newroom)
+            
+        # If the type of the object is not a tunnel...
+        else:
+            self.createObjectNode(type, name, model, pos, hpr, scale, color)
+
+
+
 
 
     ### Creates the object with the neccisary properties and appends ###
     ### the object into a dictionary so we can easily modify it      ###
-    def createObjectNode(self,):
+    def createObjectNode(self,type, name, model, pos, hpr, scale, color):
         self.models[name] = loader.loadModel(model)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)
+        self.models[name].setHpr(hpr)
         self.models[name].setScale(scale)
         self.models[name].setColor(color)
 
 
 
-    def createDoorNode(self,):
+    def createDoorNode(self, type, name, pos, hpr, exittunnel, newroom):
         self.models[name] = render.attachNewNode(name)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)
+        self.models[name].setHpr(hpr)
         
         # Set the collision geometry; we need first a CollisionNode
         sensor = self.models[name].attachNewNode(CollisionNode(name))
@@ -137,7 +154,7 @@ class MyApp(ShowBase):
         sensor.show()
         
         # Collision logic
-        self.accept('playersensor-into-' + name, self.createRoom, [moveto_room])
+        self.accept('playersensor-into-' + name, self.transition, [newroom, exittunnel])
 
 
 

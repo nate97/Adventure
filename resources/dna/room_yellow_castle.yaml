@@ -9,29 +9,26 @@ room_yellow_castle:
 
 
 
-room_door_0:
-    type: 'door'
-    name: 'doorcnode_0'
-    model: ''
+room_tunnel_0:
+    type: 'tunnel'
+    name: 'tunnelcnode_0'
     pos: [0, -27, 1]
     scale: [1, 1, 1]
-    color: 'white'
-    collision: [-14,0,0,14,0,0,1.5]
-    room: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'
-    tunnel: 'doorcnode_2'
+    collisionbounds: [-14,0,0,14,0,0,1.5]
+    exittunnel: 'tunnelcnode_2'
+    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'
 
 
 
-room_door_1:
-    type: 'door'
-    name: 'doorcnode_1'
-    model: ''
+room_tunnel_1:
+    type: 'tunnel'
+    name: 'tunnelcnode_1'
+
     pos: [0, 27, 1]
     scale: [1, 1, 1]
-    color: 'white'
-    collision: [-14,0,0,14,0,0,1.5]
-    room: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'
-    tunnel: 'doorcnode_2'
+    collisionbounds: [-14,0,0,14,0,0,1.5]
+    exittunnel: 'tunnelcnode_2'
+    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'
 
 
 

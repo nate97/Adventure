@@ -54,44 +54,94 @@ class MyApp(ShowBase):
         ### Iterate over all the objects in the dna file. ###
         ### Remember we're doing this in a FOR LOOP!!!    ###
         for nodes in dna:
-            print nodes
+            
+            # Setup default properties
+            model = None
+            pos = None
+            hpr = None
+            scale = None
+            color = None
+            collisiontype = None
+            collisionbounds = None
+            exittunnel = None
+            newroom = None
+            
             
             ### COMMON PROPERTIES ###
-            
             type = dna[nodes]['type']
             
             name = dna[nodes]['name']
             
-            model = dna[nodes]['model']
             
-            pos_list = dna[nodes]['pos']
-            pos = tuple(pos_list)
-            
-            scale_list = dna[nodes]['scale']
-            scale = tuple(scale_list)
-            
-            color_str = dna[nodes]['color']
-            color = Colors[color_str]
+            ### OPTIONAL PROPERTIES ###
+            if 'model' in dna[nodes]:
+                model = dna[nodes]['model']
+                
+            if 'pos' in dna[nodes]:
+                pos_list = dna[nodes]['pos']
+                pos = tuple(pos_list)
+                
+            if 'hpr' in dna[nodes]:
+                hpr_list = dna[nodes]['hpr']
+                hpr = tuple(hpr_list)
+                
+            if 'scale' in dna[nodes]:
+                scale_list = dna[nodes]['scale']
+                scale = tuple(scale_list)
+                
+            if 'color' in dna[nodes]:
+                color_str = dna[nodes]['color']
+                color = Colors[color_str]
+                
+            if 'collisiontype' in dna[nodes]:
+                collisiontype = dna[nodes]['collisiontype']
+                
+            if 'collisionbounds' in dna[nodes]:
+                collisionbounds_list = dna[nodes]['collisionbounds']
+                collisionbounds = tuple(collisionbounds_list)
+                
+            if 'exittunnel' in dna[nodes]:
+                exittunnel = dna[nodes]['exittunnel']
+                
+            if 'newroom' in dna[nodes]:
+                newroom = dna[nodes]['newroom']
 
 
-            ### SPECIAL PROPERTIES ###
-            
-            if type == 'door':
-                print 'Adding collision'
-
-                coll_list = dna[nodes]['collision']
-                collision = tuple(coll_list)
-
-                moveto_room = dna[nodes]['room']
-                self.createGraphicNode(name, type, model, pos, scale, color, collision, moveto_room)
-
-            else:
-                # Create the node!!!
-                self.createGraphicNode(name, type, model, pos, scale, color)
+            self.prepareNode(type, name, model, pos, hpr, scale, color, collisiontype, collisionbounds, exittunnel, newroom)
 
 
 
+    def prepareNode(self, type, name, model, pos, hpr, scale, color, collisiontype, collisionbounds, exittunnel, newroom):
+        print 'Preparing node'
+        print (type, name, model, pos, hpr, scale, color, collisiontype, collisionbounds, exittunnel, newroom)
 
+
+    ### Creates the object with the neccisary properties and appends ###
+    ### the object into a dictionary so we can easily modify it      ###
+    def createObjectNode(self,):
+        self.models[name] = loader.loadModel(model)
+        self.models[name].reparentTo(render)
+        self.models[name].setPos(pos)
+        self.models[name].setScale(scale)
+        self.models[name].setColor(color)
+
+
+
+    def createDoorNode(self,):
+        self.models[name] = render.attachNewNode(name)
+        self.models[name].reparentTo(render)
+        self.models[name].setPos(pos)
+        
+        # Set the collision geometry; we need first a CollisionNode
+        sensor = self.models[name].attachNewNode(CollisionNode(name))
+        # We add that to our CollisionSphere geometry primitive
+        sensor.node().addSolid(CollisionTube(-14,0,0,14,0,0,1.5))
+        sensor.node().setFromCollideMask(BitMask32.allOff())
+        sensor.node().setIntoCollideMask(1)
+        sensor.show()
+        
+        # Collision logic
+        self.accept('playersensor-into-' + name, self.createRoom, [moveto_room])
 
 
 
@@ -102,15 +152,21 @@ class MyApp(ShowBase):
 
 
 
-    ### Creates the object with the neccisary properties and appends ###
-    ### the object into a dictionary so we can easily modify it      ###
-    ### later on in the game.                                        ###
+
+
+
+
+
+
+
+
+
+
+
     def createGraphicNode(self, name, type, model, pos, scale, color, collision = None, moveto_room = None):
 
             # Load a collision node
             if collision != None:
-                print 'colllllllllllllllllllll'
-                print collision
                 self.models[name] = render.attachNewNode(name)
                 self.models[name].reparentTo(render)
                 self.models[name].setPos(pos)
@@ -128,8 +184,6 @@ class MyApp(ShowBase):
 
             # Load a default graphical node
             else:
-                print name
-                print 'yaaaaaaaaaaaaa'
                 self.models[name] = loader.loadModel(model)
                 self.models[name].reparentTo(render)
                 self.models[name].setPos(pos)

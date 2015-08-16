@@ -1,0 +1,21 @@
+
+room_green:
+    type: 'room'
+    name: 'room_green'
+    model: '/home/nathan/Documents/Git/Adventure/resources/room_green.egg'
+    pos: [0,0,0]
+    scale: [7, 3.5, 1]
+    color: 'green'
+
+    
+    
+room_door_2:
+    type: 'door'
+    name: 'doorcnode_2'
+    model: ''
+    pos: [0, 27, 1]
+    scale: [1, 1, 1]
+    color: 'white'
+    collision: [-14,0,0,14,0,0,1.5]
+    room: '/home/nathan/Documents/Git/Adventure/adventurebase/test.yaml'
+    tunnel: 'doorcnode_0'

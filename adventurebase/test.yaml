@@ -1,0 +1,44 @@
+
+room_yellow_castle:
+    type: 'room'
+    name: 'room_yellow_castle'
+    model: '/home/nathan/Documents/Git/Adventure/resources/room_start_yellow.egg'
+    pos: [0,0,0]
+    scale: [7, 3.5, 1]
+    color: 'yellow'
+
+
+
+room_door_0:
+    type: 'door'
+    name: 'doorcnode_0'
+    model: ''
+    pos: [0, -27, 1]
+    scale: [1, 1, 1]
+    color: 'white'
+    collision: [-14,0,0,14,0,0,1.5]
+    room: '/home/nathan/Documents/Git/Adventure/adventurebase/lvl.yaml'
+    tunnel: 'doorcnode_2'
+
+
+
+room_door_1:
+    type: 'door'
+    name: 'doorcnode_1'
+    model: ''
+    pos: [0, 27, 1]
+    scale: [1, 1, 1]
+    color: 'white'
+    collision: [-14,0,0,14,0,0,1.5]
+    room: '/home/nathan/Documents/Git/Adventure/adventurebase/lvl.yaml'
+    tunnel: 'doorcnode_2'
+
+
+
+key_yellow:
+    type: 'playeritem'
+    name: 'key_yellow'
+    model: '/home/nathan/Documents/Git/Adventure/resources/player.egg'
+    pos: [10,-15,1]
+    scale: [1, 1, 1]
+    color: 'black'

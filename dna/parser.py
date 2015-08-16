@@ -113,15 +113,15 @@ class MyApp(ShowBase):
 
 
         ### This is so we call the corrosponding methods based ###
-        ### on what kind of object we are going to load ###
+        ### on what kind of object we are going to load        ###
 
         # If the object is a tunnel...
         if type == 'tunnel':
-            self.createDoorNode(type, name, pos, hpr, exittunnel, newroom)
+            self.createDoor(type, name, pos, hpr, exittunnel, newroom)
             
         # If the type of the object is not a tunnel...
         else:
-            self.createObjectNode(type, name, model, pos, hpr, scale, color)
+            self.createGenericObject(type, name, model, pos, hpr, scale, color)
 
 
 
@@ -129,7 +129,7 @@ class MyApp(ShowBase):
 
     ### Creates the object with the neccisary properties and appends ###
     ### the object into a dictionary so we can easily modify it      ###
-    def createObjectNode(self,type, name, model, pos, hpr, scale, color):
+    def createGenericObject(self,type, name, model, pos, hpr, scale, color):
         self.models[name] = loader.loadModel(model)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)
@@ -139,7 +139,7 @@ class MyApp(ShowBase):
 
 
 
-    def createDoorNode(self, type, name, pos, hpr, exittunnel, newroom):
+    def createDoor(self, type, name, pos, hpr, exittunnel, newroom):
         self.models[name] = render.attachNewNode(name)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)

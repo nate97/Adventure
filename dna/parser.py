@@ -29,7 +29,7 @@ class MyApp(ShowBase):
         self.models = {}
         
         
-        dnafile = '/home/nathan/Documents/Git/Adventure/adventurebase/test.yaml'
+        dnafile = '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
         
         self.createRoom(dnafile)
 
@@ -114,7 +114,6 @@ class MyApp(ShowBase):
                 self.models[name] = render.attachNewNode(name)
                 self.models[name].reparentTo(render)
                 self.models[name].setPos(pos)
-                
                 
                 # then we set the collision geometry; we need first a CollisionNode
                 sensor = self.models[name].attachNewNode(CollisionNode(name))

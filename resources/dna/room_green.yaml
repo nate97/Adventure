@@ -17,5 +17,5 @@ room_door_2:
     scale: [1, 1, 1]
     color: 'white'
     collision: [-14,0,0,14,0,0,1.5]
-    room: '/home/nathan/Documents/Git/Adventure/adventurebase/test.yaml'
+    room: '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
     tunnel: 'doorcnode_0'

@@ -56,7 +56,7 @@ class MyApp(ShowBase):
         
 
 
-        dnafile = '/home/nathan/Documents/Git/Adventure/adventurebase/test.yaml'
+        dnafile = '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
         
         
         self.loadPlayerModel()

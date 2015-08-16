@@ -61,7 +61,6 @@ class MyApp(ShowBase):
             hpr = None
             scale = None
             color = None
-            collisiontype = None
             collisionbounds = None
             exittunnel = None
             newroom = None
@@ -93,9 +92,6 @@ class MyApp(ShowBase):
                 color_str = dna[nodes]['color']
                 color = Colors[color_str]
                 
-            if 'collisiontype' in dna[nodes]:
-                collisiontype = dna[nodes]['collisiontype']
-                
             if 'collisionbounds' in dna[nodes]:
                 collisionbounds_list = dna[nodes]['collisionbounds']
                 collisionbounds = tuple(collisionbounds_list)
@@ -107,13 +103,13 @@ class MyApp(ShowBase):
                 newroom = dna[nodes]['newroom']
 
 
-            self.prepareNode(type, name, model, pos, hpr, scale, color, collisiontype, collisionbounds, exittunnel, newroom)
+            self.prepareNode(type, name, model, pos, hpr, scale, color, collisionbounds, exittunnel, newroom)
 
 
 
-    def prepareNode(self, type, name, model, pos, hpr, scale, color, collisiontype, collisionbounds, exittunnel, newroom):
+    def prepareNode(self, type, name, model, pos, hpr, scale, color, collisionbounds, exittunnel, newroom):
         print 'Preparing node'
-        print (type, name, model, pos, hpr, scale, color, collisiontype, collisionbounds, exittunnel, newroom)
+        print (type, name, model, pos, hpr, scale, color, collisionbounds, exittunnel, newroom)
 
 
     ### Creates the object with the neccisary properties and appends ###
@@ -149,49 +145,6 @@ class MyApp(ShowBase):
     def destroyRoom(self):
         for nodes in self.models:
             self.models[nodes].removeNode()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def createGraphicNode(self, name, type, model, pos, scale, color, collision = None, moveto_room = None):
-
-            # Load a collision node
-            if collision != None:
-                self.models[name] = render.attachNewNode(name)
-                self.models[name].reparentTo(render)
-                self.models[name].setPos(pos)
-                
-                # then we set the collision geometry; we need first a CollisionNode
-                sensor = self.models[name].attachNewNode(CollisionNode(name))
-                #...then we add to that our CollisionSphere geometry primitive.
-                sensor.node().addSolid(CollisionTube(-14,0,0,14,0,0,1.5))
-                sensor.node().setFromCollideMask(BitMask32.allOff())
-                sensor.node().setIntoCollideMask(1)
-                sensor.show()
-
-                self.accept('playersensor-into-' + name, self.createRoom, [moveto_room])
-
-
-            # Load a default graphical node
-            else:
-                self.models[name] = loader.loadModel(model)
-                self.models[name].reparentTo(render)
-                self.models[name].setPos(pos)
-                self.models[name].setScale(scale)
-                self.models[name].setColor(color)
-
-
-
 
 
 

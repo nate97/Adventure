@@ -15,6 +15,12 @@ class MyApp(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
 
+        # Panda settings
+        base.cam.setPos(0,0,100)
+        base.cam.setHpr(0,-90,0)
+
+        base.setBackgroundColor(0.6,0.6,0.6)
+
         self.models = {}
 
 
@@ -32,8 +38,6 @@ class MyApp(ShowBase):
         # localPlayer globals
         self.localColor = Colors['black']
         
-        base.cam.setPos(0,0,100)
-        base.cam.setHpr(0,-90,0)
 
         # This is used to store which keys are currently pressed.
         self.keyMap = {
@@ -74,7 +78,6 @@ class MyApp(ShowBase):
         self.player.setPos(0,-15,1)
         self.player.setScale(1,1,1)
         self.player.setColor(self.localColor)
-        self.player.setCollideMask(BitMask32.allOff())
         
         
         # Add physical collision object to player
@@ -126,12 +129,36 @@ class MyApp(ShowBase):
         
         self.createRoom(newroom)
         
-        # Get position of exittunnel the player is leaving
-        tunnelpos = self.models[exittunnel].getY()
-        if tunnelpos > self.player.getY():
-            self.player.setY(self.models[exittunnel].getY() - 5)
+        self.positionCalculator(exittunnel)
+        
+
+        
+        
+    # Calculates where to place the player when he
+    # exits a tunnel
+    def positionCalculator(self, tunnel):
+        
+        # Get position of tunnel the player is exiting from
+        tunnelY = self.models[tunnel].getY()
+        tunnelX = self.models[tunnel].getX()
+        tunnelhpr = self.models[tunnel].getH()
+
+        if tunnelhpr == 90:
+            if self.player.getX() > tunnelX:
+                self.player.setX(tunnelX + 5)
+            else:
+                self.player.setX(tunnelX - 5)
+        
         else:
-            self.player.setY(self.models[exittunnel].getY() + 5)
+            if self.player.getY() > tunnelY:
+                self.player.setY(tunnelY + 5)
+            else:
+                self.player.setY(tunnelY - 5)
+        
+        
+        
+        
+
 
 
 
@@ -202,8 +229,8 @@ class MyApp(ShowBase):
 
 
     def prepareNode(self, type, name, model, pos, hpr, scale, color, exittunnel, newroom):
-        print 'Preparing node'
-        print (type, name, model, pos, hpr, scale, color, exittunnel, newroom)
+        #print 'Preparing node'
+        #print (type, name, model, pos, hpr, scale, color, exittunnel, newroom)
 
         ### This is so we call the corrosponding methods based ###
         ### on what kind of object we are going to load        ###

@@ -9,7 +9,7 @@ room_green:
 
 
     
-room_tunnel_2:
+tunnel_2:
     type: 'tunnel'
     name: 'tunnelcnode_2'
     pos: [0, 27, 1]
@@ -20,22 +20,22 @@ room_tunnel_2:
 
 
 
-room_tunnel_3:
+tunnel_3:
     type: 'tunnel'
     name: 'tunnelcnode_3'
     pos: [51, 0, 1]
     hpr: [90, 0, 0]
-    scale: [1, 1, 1]
-    exittunnel: 'tunnelcnode_0'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
+    scale: [2, 1, 1]
+    exittunnel: 'tunnelcnode_6'
+    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green_right.yaml'
 
 
 
-room_tunnel_4:
+tunnel_4:
     type: 'tunnel'
     name: 'tunnelcnode_4'
     pos: [-51, 0, 1]
     hpr: [90, 0, 0]
-    scale: [1, 1, 1]
-    exittunnel: 'tunnelcnode_6'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green_line.yaml'
+    scale: [2, 1, 1]
+    exittunnel: 'tunnelcnode_8'
+    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green_left.yaml'

@@ -1,30 +1,29 @@
- 
-room_green_line:
+
+room_green_right:
     type: 'room'
-    name: 'room_green_line'
-    model: '/home/nathan/Documents/Git/Adventure/resources/room_green_line.egg'
+    name: 'room_green_right'
+    model: '/home/nathan/Documents/Git/Adventure/resources/room_green_right.egg'
     pos: [0,0,0]
     scale: [7, 3.5, 1]
-    color: 'lime green'
+    color: 'lime yellow'
 
-    
-    
 
 
 line_0:
     type: 'wall'
     name: 'line_0'
     model: '/home/nathan/Documents/Git/Adventure/resources/line.egg'
-    pos: [-40,0,0.1]
+    pos: [40,0,0.1]
     scale: [1, 5, 1]
     color: 'black'
-    
 
-room_tunnel_6:
+
+
+tunnel_6:
     type: 'tunnel'
     name: 'tunnelcnode_6'
-    pos: [51, 0, 1]
+    pos: [-51, 0, 1]
     hpr: [90, 0, 0]
-    scale: [1, 1, 1]
-    exittunnel: 'tunnelcnode_4'
+    scale: [2, 1, 1]
+    exittunnel: 'tunnelcnode_3'
     newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'

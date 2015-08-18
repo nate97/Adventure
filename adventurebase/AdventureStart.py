@@ -130,19 +130,18 @@ class MyApp(ShowBase):
         self.createRoom(newroom)
         
         self.positionCalculator(exittunnel)
-        
 
-        
-        
+
+
     # Calculates where to place the player when he
     # exits a tunnel
     def positionCalculator(self, tunnel):
         
         # Get position of tunnel the player is exiting from
-        tunnelY = self.models[tunnel].getY()
         tunnelX = self.models[tunnel].getX()
+        tunnelY = self.models[tunnel].getY()
         tunnelhpr = self.models[tunnel].getH()
-
+        
         if tunnelhpr == 90:
             if self.player.getX() > tunnelX:
                 self.player.setX(tunnelX + 5)
@@ -154,11 +153,6 @@ class MyApp(ShowBase):
                 self.player.setY(tunnelY + 5)
             else:
                 self.player.setY(tunnelY - 5)
-        
-        
-        
-        
-
 
 
 
@@ -237,7 +231,7 @@ class MyApp(ShowBase):
 
         # If the object is a tunnel...
         if type == 'tunnel':
-            self.createDoor(type, name, pos, hpr, exittunnel, newroom)
+            self.createDoor(type, name, pos, hpr, scale, exittunnel, newroom)
             
         # If the type of the object is not a tunnel...
         else:
@@ -260,11 +254,12 @@ class MyApp(ShowBase):
 
 
 
-    def createDoor(self, type, name, pos, hpr, exittunnel, newroom):
+    def createDoor(self, type, name, pos, hpr, scale, exittunnel, newroom):
         self.models[name] = render.attachNewNode(name)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)
         self.models[name].setHpr(hpr)
+        self.models[name].setScale(scale)
         
         # Set the collision geometry; we need first a CollisionNode
         sensor = self.models[name].attachNewNode(CollisionNode(name))

@@ -111,11 +111,7 @@ class MyApp(ShowBase):
             if 'color' in dna[nodes]:
                 color_str = dna[nodes]['color']
                 color = Colors[color_str]
-                      
-            if 'collisionsize' in dna[nodes]:
-                collisionsize_str = dna[nodes]['collisionsize']
-                collisionsize = Collisions[collisionsize_str]
-                
+            
             if 'exittunnel' in dna[nodes]:
                 exittunnel = dna[nodes]['exittunnel']
                 
@@ -125,20 +121,20 @@ class MyApp(ShowBase):
 
             # Call the first method into the process of 
             # adding the object into the game
-            self.prepareNode(type, name, model, pos, hpr, scale, color, collisionsize, exittunnel, newroom)
+            self.prepareNode(type, name, model, pos, hpr, scale, color, exittunnel, newroom)
 
 
 
-    def prepareNode(self, type, name, model, pos, hpr, scale, color, collisionsize, exittunnel, newroom):
+    def prepareNode(self, type, name, model, pos, hpr, scale, color, exittunnel, newroom):
         print 'Preparing node'
-        print (type, name, model, pos, hpr, scale, color, collisionsize, exittunnel, newroom)
+        print (type, name, model, pos, hpr, scale, color, exittunnel, newroom)
 
         ### This is so we call the corrosponding methods based ###
         ### on what kind of object we are going to load        ###
 
         # If the object is a tunnel...
         if type == 'tunnel':
-            self.createDoor(type, name, pos, hpr, collisionsize, exittunnel, newroom)
+            self.createDoor(type, name, pos, hpr, exittunnel, newroom)
             
         # If the type of the object is not a tunnel...
         else:
@@ -158,7 +154,7 @@ class MyApp(ShowBase):
 
 
 
-    def createDoor(self, type, name, pos, hpr, collisionsize, exittunnel, newroom):
+    def createDoor(self, type, name, pos, hpr, exittunnel, newroom):
         self.models[name] = render.attachNewNode(name)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)
@@ -167,7 +163,7 @@ class MyApp(ShowBase):
         # Set the collision geometry; we need first a CollisionNode
         sensor = self.models[name].attachNewNode(CollisionNode(name))
         # We add that to our CollisionSphere geometry primitive
-        sensor.node().addSolid(CollisionTube(collisionsize))
+        sensor.node().addSolid(CollisionTube(-14,0,0,14,0,0,1.5))
         sensor.node().setFromCollideMask(BitMask32.allOff())
         sensor.node().setIntoCollideMask(1)
         sensor.show()

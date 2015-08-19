@@ -60,7 +60,7 @@ class MyApp(ShowBase):
         
 
 
-        dnafile = '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
+        dnafile = 'dna/room_yellow_castle.yaml'
         
         self.loadPlayerModel()
         
@@ -163,6 +163,9 @@ class MyApp(ShowBase):
         ### in the scene is already clear           ###
         self.destroyRoom()
         
+        # Append path to file name
+        dnafile = Resources + dnafile
+        
         ### We open the dna file ###
         with open(dnafile, 'r') as f:
             dna = yaml.load(f)
@@ -191,7 +194,9 @@ class MyApp(ShowBase):
             
             ### OPTIONAL PROPERTIES ###
             if 'model' in dna[nodes]:
-                model = dna[nodes]['model']
+                modelname = dna[nodes]['model']
+                # Append path to file name
+                model = Resources + modelname
                 
             if 'pos' in dna[nodes]:
                 pos_list = dna[nodes]['pos']
@@ -208,7 +213,7 @@ class MyApp(ShowBase):
             if 'color' in dna[nodes]:
                 color_str = dna[nodes]['color']
                 color = Colors[color_str]
-                                
+            
             if 'exittunnel' in dna[nodes]:
                 exittunnel = dna[nodes]['exittunnel']
                 

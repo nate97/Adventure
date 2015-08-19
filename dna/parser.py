@@ -5,8 +5,9 @@ from direct.task.Task import Task
 from panda3d.core import *
 import sys
 import yaml
+import os
 
-
+Cwd = os.getcwd()
 
 # Globals #
 Colors = {'black':(0,0,0,1),
@@ -20,10 +21,8 @@ Colors = {'black':(0,0,0,1),
                 'yellow':(1,1,0,1)
                 }
 
-Collisions = {'small': (-14,0,0,14,0,0,1.5),
-                'medium': (-14,0,0,14,0,0,1.5),
-                'large': (-14,0,0,14,0,0,1.5)
-                }
+
+Resources = ('../resources/')
 
 
 class MyApp(ShowBase):
@@ -34,7 +33,7 @@ class MyApp(ShowBase):
         self.models = {}
         
         
-        dnafile = '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
+        dnafile = 'dna/room_yellow_castle.yaml'
         
         self.createRoom(dnafile)
 
@@ -65,6 +64,9 @@ class MyApp(ShowBase):
     ### Builds the room the player is currently in ###
     def createRoom(self, dnafile):
         
+        # Append path to file name
+        dnafile = Resources + dnafile
+        
         ### First things first we open the dna file ###
         with open(dnafile, 'r') as f:
             dna = yaml.load(f)
@@ -94,7 +96,9 @@ class MyApp(ShowBase):
             
             ### OPTIONAL PROPERTIES ###
             if 'model' in dna[nodes]:
-                model = dna[nodes]['model']
+                modelname = dna[nodes]['model']
+                # Append path to file name
+                model = Resources + modelname
                 
             if 'pos' in dna[nodes]:
                 pos_list = dna[nodes]['pos']

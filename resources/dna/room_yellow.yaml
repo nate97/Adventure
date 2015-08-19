@@ -1,18 +1,18 @@
 
 room_yellow:
     type: 'room'
-    name: 'yellow_green'
-    model: '/home/nathan/Documents/Git/Adventure/resources/room_yellow.egg'
+    name: 'room_yellow'
+    model: 'models/rooms/room_yellow.egg'
     pos: [0,0,0]
     scale: [7, 3.5, 1]
     color: 'yellow'
 
     
     
-room_tunnel_2:
+tunnel_3:
     type: 'tunnel'
     name: 'tunnelcnode_3'
     pos: [0, -27, 1]
     scale: [1, 1, 1]
     exittunnel: 'tunnelcnode_1'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
+    newroom: 'dna/room_yellow_castle.yaml'

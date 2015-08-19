@@ -2,7 +2,7 @@
 room_yellow_castle:
     type: 'room'
     name: 'room_yellow_castle'
-    model: '/home/nathan/Documents/Git/Adventure/resources/room_start_yellow.egg'
+    model: 'models/rooms/room_start_yellow.egg'
     pos: [0,0,0]
     scale: [7, 3.5, 1]
     color: 'yellow'
@@ -15,7 +15,7 @@ room_tunnel_0:
     pos: [0, -27, 1]
     scale: [1, 1, 1]
     exittunnel: 'tunnelcnode_2'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'
+    newroom: 'dna/room_green.yaml'
 
 
 
@@ -25,14 +25,14 @@ room_tunnel_1:
     pos: [0, 0, 1]
     scale: [1, 1, 1]
     exittunnel: 'tunnelcnode_3'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow.yaml'
+    newroom: 'dna/room_yellow.yaml'
 
 
 
 key_yellow:
     type: 'playeritem'
     name: 'key_yellow'
-    model: '/home/nathan/Documents/Git/Adventure/resources/player.egg'
+    model: 'models/players/player.egg'
     pos: [10,-15,1]
     scale: [1, 1, 1]
     color: 'green'

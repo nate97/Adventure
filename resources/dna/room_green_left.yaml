@@ -2,7 +2,7 @@
 room_green_left:
     type: 'room'
     name: 'room_green_left'
-    model: '/home/nathan/Documents/Git/Adventure/resources/room_green_left.egg'
+    model: 'models/rooms/room_green_left.egg'
     pos: [0,0,0]
     scale: [7, 3.5, 1]
     color: 'lime green'
@@ -12,7 +12,7 @@ room_green_left:
 line_1:
     type: 'wall'
     name: 'line_1'
-    model: '/home/nathan/Documents/Git/Adventure/resources/line.egg'
+    model: 'models/props/line.egg'
     pos: [-40,0,0.1]
     scale: [1, 5, 1]
     color: 'yellow'
@@ -26,4 +26,4 @@ tunnel_8:
     hpr: [90, 0, 0]
     scale: [2, 1, 1]
     exittunnel: 'tunnelcnode_4'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green.yaml'
+    newroom: 'dna/room_green.yaml'

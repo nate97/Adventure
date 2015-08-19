@@ -19,5 +19,5 @@ Colors = {'black':(0,0,0,1),
                 'yellow':(1,1,0,1)
                 }
 # Settings for the player
-PlayerModel = (Resources + 'player.egg')
+PlayerModel = (Resources + 'models/players/player.egg')
 PlayerWalkSpeed = 0.5

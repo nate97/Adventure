@@ -2,7 +2,7 @@
 room_green:
     type: 'room'
     name: 'room_green'
-    model: '/home/nathan/Documents/Git/Adventure/resources/room_green.egg'
+    model: 'models/rooms/room_green.egg'
     pos: [0,0,0]
     scale: [7, 3.5, 1]
     color: 'green'
@@ -16,7 +16,7 @@ tunnel_2:
     hpr: [0, 0, 0]
     scale: [1, 1, 1]
     exittunnel: 'tunnelcnode_0'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_yellow_castle.yaml'
+    newroom: 'dna/room_yellow_castle.yaml'
 
 
 
@@ -27,7 +27,7 @@ tunnel_3:
     hpr: [90, 0, 0]
     scale: [2, 1, 1]
     exittunnel: 'tunnelcnode_6'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green_right.yaml'
+    newroom: 'dna/room_green_right.yaml'
 
 
 
@@ -38,4 +38,4 @@ tunnel_4:
     hpr: [90, 0, 0]
     scale: [2, 1, 1]
     exittunnel: 'tunnelcnode_8'
-    newroom: '/home/nathan/Documents/Git/Adventure/resources/dna/room_green_left.yaml'
+    newroom: 'dna/room_green_left.yaml'

@@ -172,6 +172,12 @@ class MyApp(ShowBase):
         self.accept('playersensor-into-' + name, self.transition, [newroom, exittunnel])
 
 
+    
+        def createPlayerItem(self, type, name, model, pos, hpr, scale, color):
+            pass
+            #self.createGenericObject()
+
+
 
     ### Destroys all nodes in the current room the player is in ###
     def destroyRoom(self):

@@ -10,6 +10,8 @@ from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, C
 
 from AdventureGlobals import *
 
+from player import *
+
 class MyApp(ShowBase):
  
     def __init__(self):
@@ -52,17 +54,16 @@ class MyApp(ShowBase):
         self.accept("arrow_right-up", self.setKey, ["right", False])
         self.accept("arrow_up-up", self.setKey, ["forward", False])
         self.accept("arrow_down-up", self.setKey, ["backward", False])
-        
-        
 
-        
+
         taskMgr.add(self.move, "moveTask")
         
 
-
         dnafile = 'dna/room_yellow_castle.yaml'
         
-        self.loadPlayerModel()
+        
+        # NEW
+        self.setupPlayer()
         
         self.createRoom(dnafile)
 
@@ -72,31 +73,16 @@ class MyApp(ShowBase):
 
 
 
-    def loadPlayerModel(self):
-        self.player = loader.loadModel(PlayerModel)
-        self.player.reparentTo(render)
-        self.player.setPos(0,-15,1)
-        self.player.setScale(1,1,1)
-        self.player.setColor(self.localColor)
-        
-        
-        # Add physical collision object to player
-        self.playerCollider = self.player.attachNewNode(CollisionNode('playercnode'))
-        self.playerCollider.node().addSolid(CollisionSphere(0, 0, 0, 1))
-        # Adding to trav turns it into a from object( moving object )
-        #base.cTrav.addCollider(self.playerCollider, self.collisionHandler)
-        self.playerCollider.node().setFromCollideMask(WALL_MASK)
-        self.playerCollider.node().setIntoCollideMask(BitMask32.allOff())
-        
-        
-        # Sensor collision
-        self.playerSensor = self.player.attachNewNode(CollisionNode('playersensor'))
-        cs=CollisionSphere(0, 0, 0, 1.2)
-        self.playerSensor.node().addSolid(cs)
-        self.playerSensor.node().setFromCollideMask(DOOR_MASK)
-        self.playerSensor.node().setIntoCollideMask(BitMask32.allOff())
-        # as said above, to act correctly we need to make clear to the system that this is just a sensor, with no solid parts
-        cs.setTangible(0)
+    def setupPlayer(self):
+        self.localPlayer = LocalPlayer()
+
+        self.localPlayer.load()
+
+        self.player = self.localPlayer.player
+
+        self.localPlayer.setPos((0,-15,1))
+
+        self.localPlayer.setCollisions()
 
 
 
@@ -245,7 +231,7 @@ class MyApp(ShowBase):
             # TEMPORARY
             if type == 'room':
                 self.localColor = color
-                self.player.setColor(self.localColor)
+                self.localPlayer.setColor(self.localColor)
 
     ### Creates the object with the neccisary properties and appends ###
     ### the object into a dictionary so we can easily modify it      ###
@@ -288,13 +274,19 @@ class MyApp(ShowBase):
 
     def setupColliders(self):
         # Tell collider what to check for
-        self.wallHandler.addCollider(self.playerCollider, self.player) 
+        
+        # TEMP # 
+        test = self.localPlayer.playerCollider
+        
+        test2 = self.localPlayer.playerSensor
+        
+        self.wallHandler.addCollider(test, self.player) 
 
         # Adding to trav turns it into a from object( moving object )
-        base.cTrav.addCollider(self.playerCollider, self.wallHandler)
+        base.cTrav.addCollider(test, self.wallHandler)
 
         # Adding to trav turns it into a from object( moving object )
-        base.cTrav.addCollider(self.playerSensor, self.collisionHandler)
+        base.cTrav.addCollider(test2, self.collisionHandler)
 
 
 

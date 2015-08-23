@@ -1,11 +1,11 @@
 from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, CollisionNode, CollisionSphere, CollisionTube, CollisionTraverser, BitMask32, CollisionRay, NodePath
-
-
-
 from AdventureGlobals import *
+
+
 class LocalPlayer():
  
     def __init__(self):
+        self.playerList = {}
         # Define default color
         self.colorIndex = (1,1,1)
         # Define default scale

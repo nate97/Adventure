@@ -5,18 +5,26 @@ from AdventureGlobals import *
 class LocalPlayer():
  
     def __init__(self):
+        # THIS SHOULD BE ELSE WHERE!!!
+        # We probably need a class that act's like a manager for
+        # all players currently in game so we can keep track of
+        # everyone online
         self.playerList = {}
-        # Define default color
-        self.colorIndex = (1,1,1)
-        # Define default scale
-        self.scale = (1,1,1)
+        
+        # Define default player model
+        self.model = PlayerModel
         # Define default position
         self.pos = (1,1,1)
+        # Define default scale
+        self.scale = (1,1,1)
+        # Define default color
+        self.colorIndex = (1,1,1)
 
 
 
-    def load(self):        
-        self.player = loader.loadModel(PlayerModel)
+    def loadPlayerModel(self, model):   
+        self.model = model
+        self.player = loader.loadModel(self.model)
         self.player.reparentTo(render)
 
 

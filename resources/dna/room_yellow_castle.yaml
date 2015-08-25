@@ -29,13 +29,5 @@ room_tunnel_1:
 
 
 
-key_yellow:
-    type: 'playeritem'
-    name: 'key_yellow'
-    model: 'models/players/player.egg'
-    pos: [10,-15,1]
-    scale: [1, 1, 1]
-    color: 'green'
-    
     
     

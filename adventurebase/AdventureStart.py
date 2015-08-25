@@ -10,6 +10,9 @@ from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, C
 
 from AdventureGlobals import *
 
+from dna.DNAParser import *
+
+
 from player import *
 
 class MyApp(ShowBase):
@@ -65,23 +68,33 @@ class MyApp(ShowBase):
         # NEW
         self.setupPlayer()
         
-        self.createRoom(dnafile)
+        self.dnaParser = DNAParser()
+        
+        
+        self.dnaParser.createRoom(dnafile)
+        
+        #self.createRoom(dnafile)
 
-        self.setupColliders()
+        #self.setupColliders()
         
         #self.toggle_collisions()
 
 
 
     def setupPlayer(self):
+        # Load up player class
         self.localPlayer = LocalPlayer()
-
-        self.localPlayer.load()
-
+        
+        # Load up player object
+        self.localPlayer.loadPlayerModel(PlayerModel)
+        
+        # Make player object avalible to this class
         self.player = self.localPlayer.player
-
+        
+        # Set player color
         self.localPlayer.setPos((0,-15,1))
-
+        
+        # Setup player collisions
         self.localPlayer.setCollisions()
 
 
@@ -226,16 +239,18 @@ class MyApp(ShowBase):
             
         # If the type of the object is not a tunnel...
         else:
-            self.createGenericObject(type, name, model, pos, hpr, scale, color)
+            self.createModel(type, name, model, pos, hpr, scale, color)
 
             # TEMPORARY
             if type == 'room':
                 self.localColor = color
                 self.localPlayer.setColor(self.localColor)
 
-    ### Creates the object with the neccisary properties and appends ###
+
+
+    ### Creates the model with the required properties and appends ###
     ### the object into a dictionary so we can easily modify it      ###
-    def createGenericObject(self, type, name, model, pos, hpr, scale, color):
+    def createModel(self, type, name, model, pos, hpr, scale, color):
         self.models[name] = loader.loadModel(model)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)
@@ -245,12 +260,23 @@ class MyApp(ShowBase):
 
 
 
-    def createDoor(self, type, name, pos, hpr, scale, exittunnel, newroom):
+    # This is for building a generic dummy node for other
+    # nodes to be parented to
+    def createDummy(self, type, name, pos, hpr, scale):
         self.models[name] = render.attachNewNode(name)
         self.models[name].reparentTo(render)
         self.models[name].setPos(pos)
         self.models[name].setHpr(hpr)
         self.models[name].setScale(scale)
+
+
+
+    # Create a specific type of object called a door 
+    def createDoor(self, type, name, pos, hpr, scale, exittunnel, newroom):
+        
+        # Builds a dummy with the name supplied for our collision
+        # to be appended to
+        self.createDummy(type, name, pos, hpr, scale)
         
         # Set the collision geometry; we need first a CollisionNode
         sensor = self.models[name].attachNewNode(CollisionNode(name))
@@ -294,7 +320,5 @@ class MyApp(ShowBase):
         base.cTrav.showCollisions(base.render)
         l=base.render.findAllMatches("**/+CollisionNode")
 
-
- 
-app = MyApp()
-app.run()
+test = MyApp()
+test.run()

@@ -1,6 +1,11 @@
 from pandac.PandaModules import BitMask32
+import os
+
+mdir = os.getcwd()
+print 'AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+print mdir
 # Resource path
-Resources = ('../resources/')
+Resources = (mdir + '/' + 'resources/')
 
 # Collision masks
 WALL_MASK=BitMask32.bit(1)
@@ -19,5 +24,5 @@ Colors = {'black':(0,0,0,1),
                 'yellow':(1,1,0,1)
                 }
 # Settings for the player
-PlayerModel = (Resources + 'models/players/player.egg')
+PlayerModel = ('/home/nathan/Documents/Git/adventure/resources/models/players/player.egg')
 PlayerWalkSpeed = 0.5

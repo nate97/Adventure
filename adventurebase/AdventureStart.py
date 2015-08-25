@@ -3,16 +3,12 @@ from direct.showbase.DirectObject import DirectObject
 from direct.actor.Actor import Actor
 from direct.task.Task import Task
 from panda3d.core import *
-import sys
 import yaml
 
 from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, CollisionNode, CollisionSphere, CollisionTube, CollisionTraverser, BitMask32, CollisionRay, NodePath
 
 from AdventureGlobals import *
-
 from dna.DNAParser import *
-
-
 from player import *
 
 class MyApp(ShowBase):
@@ -21,27 +17,33 @@ class MyApp(ShowBase):
         ShowBase.__init__(self)
 
         # Panda settings
+        base.setBackgroundColor(0.6,0.6,0.6)
         base.cam.setPos(0,0,100)
         base.cam.setHpr(0,-90,0)
 
-        base.setBackgroundColor(0.6,0.6,0.6)
-
-
-        ###### Collisions ######
-        base.cTrav = CollisionTraverser()
-        self.collisionHandler = CollisionHandlerEvent()
-        self.wallHandler = CollisionHandlerPusher()
-        
-        self.collisionHandler.addInPattern('%fn-into-%in')
-
-        # this is on the other hand the relative call for the OUT event, as is when the FROM object (heart) goes OUT the INTO oject (heart).
-        self.collisionHandler.addOutPattern('%fn-out-%in')
-
-        
         # localPlayer globals
         self.localColor = Colors['black']
-        
 
+        # Setup keys for moving localPlayer
+        self.setupKeys()
+
+        # Setup collision handlers
+        self.setupCollHandlers()
+
+        # Setup dna parser
+        self.dnaParser = DNAParser(self)
+        # Load default room
+        self.dnaParser.createRoom('dna/room_yellow_castle.yaml')
+
+        # Load localPlayer
+        self.setupPlayer()
+        
+        # Setup collision colliders
+        self.setupColliders()
+
+
+
+    def setupKeys(self):
         # This is used to store which keys are currently pressed.
         self.keyMap = {
             "left": 0, "right": 0, "forward": 0, "backward": 0}
@@ -56,25 +58,20 @@ class MyApp(ShowBase):
         self.accept("arrow_up-up", self.setKey, ["forward", False])
         self.accept("arrow_down-up", self.setKey, ["backward", False])
 
+        taskMgr.add(self.moveTask, "moveTask")
 
-        taskMgr.add(self.move, "moveTask")
-        
 
-        dnafile = 'dna/room_yellow_castle.yaml'
-        
-        
-        # NEW
-        self.setupPlayer()
-        
-        self.dnaParser = DNAParser(self)
-        
-        
-        self.dnaParser.createRoom(dnafile)
-        
-        self.setupColliders()
 
+    def setupCollHandlers(self):
+        ###### Collisions ######
+        base.cTrav = CollisionTraverser()
+        self.collisionHandler = CollisionHandlerEvent()
+        self.wallHandler = CollisionHandlerPusher()
         
+        self.collisionHandler.addInPattern('%fn-into-%in')
 
+        # this is on the other hand the relative call for the OUT event, as is when the FROM object (heart) goes OUT the INTO oject (heart).
+        self.collisionHandler.addOutPattern('%fn-out-%in')
 
 
 
@@ -103,7 +100,7 @@ class MyApp(ShowBase):
 
 
     # Moves the player around
-    def move(self, task):
+    def moveTask(self, task):
         dt = globalClock.getDt()
 
         if self.keyMap["left"]:
@@ -122,9 +119,7 @@ class MyApp(ShowBase):
     # Dose basic setup for the next room and keeps
     # the player avatar in place!
     def transition(self, newroom, exittunnel, coll):
-        
         self.dnaParser.createRoom(newroom)
-        
         self.positionCalculator(exittunnel)
 
 
@@ -132,7 +127,6 @@ class MyApp(ShowBase):
     # Calculates where to place the player when he
     # exits a tunnel
     def positionCalculator(self, tunnel):
-        
         # Get position of tunnel the player is exiting from
         tunnelX = self.dnaParser.models[tunnel].getX()
         tunnelY = self.dnaParser.models[tunnel].getY()
@@ -152,29 +146,23 @@ class MyApp(ShowBase):
 
 
 
-
-
     def setupColliders(self):
         # Tell collider what to check for
         
         # TEMP # 
-        test = self.localPlayer.playerCollider
+        playerCollider = self.localPlayer.playerCollider
+        playerSensor = self.localPlayer.playerSensor
         
-        test2 = self.localPlayer.playerSensor
-        
-        self.wallHandler.addCollider(test, self.player) 
+        # Tell the wallHandler what to collide with
+        self.wallHandler.addCollider(playerCollider, self.player) 
 
         # Adding to trav turns it into a from object( moving object )
-        base.cTrav.addCollider(test, self.wallHandler)
+        base.cTrav.addCollider(playerCollider, self.wallHandler)
 
         # Adding to trav turns it into a from object( moving object )
-        base.cTrav.addCollider(test2, self.collisionHandler)
+        base.cTrav.addCollider(playerSensor, self.collisionHandler)
 
 
-
-    def toggle_collisions(self):
-        base.cTrav.showCollisions(base.render)
-        l=base.render.findAllMatches("**/+CollisionNode")
 
 test = MyApp()
 test.run()

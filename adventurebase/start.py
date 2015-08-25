@@ -1,3 +1,3 @@
 from AdventureStart import *
-test = MyApp()
-test.run()
+adventure = MyApp()
+adventure.run()

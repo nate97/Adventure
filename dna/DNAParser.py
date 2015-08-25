@@ -2,8 +2,6 @@ import sys
 import yaml
 from adventurebase.AdventureGlobals import *
 from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, CollisionNode, CollisionSphere, CollisionTube, CollisionTraverser, BitMask32, CollisionRay, NodePath
-from direct.actor.Actor import Actor
-from direct.task.Task import Task
 
 
 
@@ -11,10 +9,14 @@ class DNAParser():
 
     def __init__(self, main):
         
+        # Call back to the main class
         self.main = main
         
-        print 'Imported '
+        print 'Imported dnaParser'
+        
+        # We store all loaded up models here
         self.models = {}
+
 
 
     ### Builds the room the player is currently in ###
@@ -106,7 +108,7 @@ class DNAParser():
             # TEMPORARY
             if type == 'room':
                 self.localColor = color
-                #self.localPlayer.setColor(self.localColor)
+                self.main.player.setColor(self.localColor)
 
 
 

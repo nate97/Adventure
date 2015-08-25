@@ -30,13 +30,13 @@ class MyApp(ShowBase):
         # Setup collision handlers
         self.setupCollHandlers()
 
+        # Load localPlayer
+        self.setupPlayer()
+
         # Setup dna parser
         self.dnaParser = DNAParser(self)
         # Load default room
         self.dnaParser.createRoom('dna/room_yellow_castle.yaml')
-
-        # Load localPlayer
-        self.setupPlayer()
         
         # Setup collision colliders
         self.setupColliders()
@@ -86,7 +86,7 @@ class MyApp(ShowBase):
         self.player = self.localPlayer.player
         
         # Set player color
-        self.localPlayer.setPos((0,-15,1))
+        self.localPlayer.setPos(PlayerPos)
         
         # Setup player collisions
         self.localPlayer.setCollisions()

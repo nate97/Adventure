@@ -29,3 +29,4 @@ Colors = {'black':(0,0,0,1),
 # Settings for the player
 PlayerModel = ('/home/nathan/Documents/Git/Adventure/resources/models/players/player.egg')
 PlayerWalkSpeed = 0.5
+PlayerPos = (0,-15,1)

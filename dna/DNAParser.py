@@ -9,7 +9,10 @@ from direct.task.Task import Task
 
 class DNAParser():
 
-    def __init__(self):
+    def __init__(self, main):
+        
+        self.main = main
+        
         print 'Imported '
         self.models = {}
 
@@ -146,7 +149,7 @@ class DNAParser():
         sensor.show()
         
         # Collision logic
-        test.accept('playersensor-into-' + name, self.transition, [newroom, exittunnel])
+        self.main.accept('playersensor-into-' + name, self.main.transition, [newroom, exittunnel])
 
 
 

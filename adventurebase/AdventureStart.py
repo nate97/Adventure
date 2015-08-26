@@ -21,9 +21,6 @@ class MyApp(ShowBase):
         base.cam.setPos(0,0,100)
         base.cam.setHpr(0,-90,0)
 
-        # localPlayer globals
-        self.localColor = Colors['black']
-
         # Setup keys for moving localPlayer
         self.setupKeys()
 

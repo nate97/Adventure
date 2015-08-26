@@ -14,10 +14,14 @@ class DNAParser():
         
         print 'Imported dnaParser'
         
+        
+        ### Dna globals ###
+        
         # We store all loaded up models here
         self.models = {}
-
-
+        
+        # This is the common color of the current room we are in!
+        self.localColor = Colors['black']
 
     ### Builds the room the player is currently in ###
     def createRoom(self, dnafile):

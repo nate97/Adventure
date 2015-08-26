@@ -3,7 +3,6 @@ import os
 
 # Get current directory the application was launched in
 mdir = os.getcwd()
-print mdir
 
 # Resource path
 Resources = (mdir + '/' + 'resources/')
@@ -11,6 +10,7 @@ Resources = (mdir + '/' + 'resources/')
 # Collision masks
 WALL_MASK=BitMask32.bit(1)
 DOOR_MASK=BitMask32.bit(2)
+GATE_MASK=BitMask32.bit(3)
 
 # Colors
 Colors = {'black':(0,0,0,1),
@@ -27,6 +27,6 @@ Colors = {'black':(0,0,0,1),
                 }
 
 # Settings for the player
-PlayerModel = ('/home/nathan/Documents/Git/Adventure/resources/models/players/player.egg')
+PlayerModel = (Resources + 'models/players/player.egg')
 PlayerWalkSpeed = 0.5
 PlayerPos = (0,-15,1)

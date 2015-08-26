@@ -1,6 +1,8 @@
 import sys
 import yaml
 from adventurebase.AdventureGlobals import *
+from DNAModel import *
+from DNATunnel import *
 from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, CollisionNode, CollisionSphere, CollisionTube, CollisionTraverser, BitMask32, CollisionRay, NodePath
 
 
@@ -9,19 +11,23 @@ class DNAParser():
 
     def __init__(self, main):
         
+        print 'Imported dnaParser'
+        
+        ### Dna globals ###
+        # We store all loaded up models here
+        self.models = {}
+        self.classes = {}
+        # This is the common color of the current room we are in!
+        self.localColor = Colors['black']
+        
+        
+        
         # Call back to the main class
         self.main = main
         
-        print 'Imported dnaParser'
-        
-        
-        ### Dna globals ###
-        
-        # We store all loaded up models here
-        self.models = {}
-        
-        # This is the common color of the current room we are in!
-        self.localColor = Colors['black']
+
+
+
 
     ### Builds the room the player is currently in ###
     def createRoom(self, dnafile):
@@ -103,28 +109,49 @@ class DNAParser():
 
         # If the object is a tunnel...
         if type == 'tunnel':
-            self.createDoor(type, name, pos, hpr, scale, exittunnel, newroom)
+
+            self.classes[name] = DNATunnel()
             
-        # If the type of the object is not a tunnel...
+            self.classes[name].setType(type)
+            self.classes[name].setName(name)
+            self.classes[name].setPos(pos)
+            self.classes[name].setHpr(hpr)
+            self.classes[name].setExit(exittunnel)
+            self.classes[name].setNextRoom(newroom)
+            
+            # Now we actually create the model
+            self.classes[name].createNode()
+            
+            
+            
+            
+            
+            
+        # If the type of the object is not a tunnel then it is just a default model
         else:
-            self.createModel(type, name, model, pos, hpr, scale, color)
+            
+            # Setup all the properties this type of object needs first
+            
+            # TESTING THIS
+            self.classes[name] = DNAModel()
+            
+            self.classes[name].setType(type)
+            self.classes[name].setName(name)
+            self.classes[name].setModel(model)
+            self.classes[name].setPos(pos)
+            self.classes[name].setHpr(hpr)
+            self.classes[name].setScale(scale)
+            self.classes[name].setColor(color)
+            
+            # Now we actually create the model
+            self.classes[name].createNode()
+            
+
 
             # TEMPORARY
             if type == 'room':
                 self.localColor = color
                 self.main.player.setColor(self.localColor)
-
-
-
-    ### Creates the model with the required properties and appends ###
-    ### the object into a dictionary so we can easily modify it      ###
-    def createModel(self, type, name, model, pos, hpr, scale, color):
-        self.models[name] = loader.loadModel(model)
-        self.models[name].reparentTo(render)
-        self.models[name].setPos(pos)
-        self.models[name].setHpr(hpr)
-        self.models[name].setScale(scale)
-        self.models[name].setColor(color)
 
 
 
@@ -146,6 +173,7 @@ class DNAParser():
         # to be appended to
         self.createDummy(type, name, pos, hpr, scale)
         
+
         # Set the collision geometry; we need first a CollisionNode
         sensor = self.models[name].attachNewNode(CollisionNode(name))
         # We add that to our CollisionSphere geometry primitive
@@ -161,5 +189,12 @@ class DNAParser():
 
     ### Destroys all nodes in the current room the player is in ###
     def destroyRoom(self):
-        for nodes in self.models:
-            self.models[nodes].removeNode()
+
+        for classes in self.classes:
+            self.classes[classes].destroy()
+            
+
+        print self.classes
+            
+        #for nodes in self.models:
+            #self.models[nodes].removeNode()

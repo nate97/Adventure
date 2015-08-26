@@ -2,6 +2,7 @@ from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, C
 from AdventureGlobals import *
 
 
+
 class LocalPlayer():
  
     def __init__(self):

@@ -149,7 +149,7 @@ class DNAParser():
                 self.main.player.setColor(self.localColor)
 
 
-
+    ### THIS IS A HORRIBLY WAY TO DO THIS!!! ###
     ### Destroys all nodes in the current room the player is in ###
     def destroyRoom(self):
 

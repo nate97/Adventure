@@ -39,8 +39,3 @@ class DNATunnel(DNADummy):
         # Collision logic
         self.DNAParser.main.accept('playersensor-into-' + self.name, self.DNAParser.main.transition, [self.nextroom, self.exit])
         
-        
-    def destroy(self):
-        self.node.removeNode()
-
-

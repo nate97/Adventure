@@ -40,4 +40,3 @@ class DNADummy():
     def destroy(self):
         self.node.removeNode()
 
-

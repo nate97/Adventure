@@ -8,7 +8,7 @@ class DNADummy():
         self.name = ''
         self.pos = (0,0,0)
         self.hpr = (0,0,0)
-        self.scale = (0,0,0)
+        self.scale = (1,1,1)
         
         
     def setType(self, type):
@@ -31,7 +31,7 @@ class DNADummy():
         self.scale = scale
         
         
-    def createNode(self):
+    def createDummy(self):
         self.node = render.attachNewNode(self.name)
         self.node.reparentTo(render)
         self.node.setPosHprScale(self.pos, self.hpr, self.scale)

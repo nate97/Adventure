@@ -4,14 +4,12 @@ from adventurebase.AdventureGlobals import *
 class DNAModel():
  
     def __init__(self):
-        
-        self.ya = 'AHHHHHHHHHHHH'
         self.type = ''
         self.name = ''
         self.model = ''
         self.pos = (0,0,0)
         self.hpr = (0,0,0)
-        self.scale = (0,0,0)
+        self.scale = (1,1,1)
         self.colorIndex = (1,1,1,1)
         
         

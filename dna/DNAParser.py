@@ -1,8 +1,10 @@
 import sys
 import yaml
-from adventurebase.AdventureGlobals import *
+
 from DNAModel import *
 from DNATunnel import *
+from adventurebase.AdventureGlobals import *
+
 from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, CollisionNode, CollisionSphere, CollisionTube, CollisionTraverser, BitMask32, CollisionRay, NodePath
 
 
@@ -11,7 +13,7 @@ class DNAParser():
 
     def __init__(self, main):
         
-        print 'Imported dnaParser'
+        print 'Imported DNAParser'
         
         ### Dna globals ###
         # We store all loaded up models here
@@ -21,12 +23,9 @@ class DNAParser():
         self.localColor = Colors['black']
         
         
-        
         # Call back to the main class
         self.main = main
         
-
-
 
 
     ### Builds the room the player is currently in ###
@@ -110,7 +109,7 @@ class DNAParser():
         # If the object is a tunnel...
         if type == 'tunnel':
 
-            self.classes[name] = DNATunnel()
+            self.classes[name] = DNATunnel(self)
             
             self.classes[name].setType(type)
             self.classes[name].setName(name)
@@ -121,10 +120,7 @@ class DNAParser():
             
             # Now we actually create the model
             self.classes[name].createNode()
-            
-            
-            
-            
+                        
             
             
         # If the type of the object is not a tunnel then it is just a default model
@@ -147,43 +143,10 @@ class DNAParser():
             self.classes[name].createNode()
             
 
-
             # TEMPORARY
             if type == 'room':
                 self.localColor = color
                 self.main.player.setColor(self.localColor)
-
-
-
-    # This is for building a generic dummy node for other
-    # nodes to be parented to
-    def createDummy(self, type, name, pos, hpr, scale):
-        self.models[name] = render.attachNewNode(name)
-        self.models[name].reparentTo(render)
-        self.models[name].setPos(pos)
-        self.models[name].setHpr(hpr)
-        self.models[name].setScale(scale)
-
-
-
-    # Create a specific type of object called a door 
-    def createDoor(self, type, name, pos, hpr, scale, exittunnel, newroom):
-        
-        # Builds a dummy with the name supplied for our collision
-        # to be appended to
-        self.createDummy(type, name, pos, hpr, scale)
-        
-
-        # Set the collision geometry; we need first a CollisionNode
-        sensor = self.models[name].attachNewNode(CollisionNode(name))
-        # We add that to our CollisionSphere geometry primitive
-        sensor.node().addSolid(CollisionTube(-14,0,0,14,0,0,1.5))
-        sensor.node().setFromCollideMask(BitMask32.allOff())
-        sensor.node().setIntoCollideMask(DOOR_MASK)
-        sensor.show()
-        
-        # Collision logic
-        self.main.accept('playersensor-into-' + name, self.main.transition, [newroom, exittunnel])
 
 
 
@@ -193,8 +156,4 @@ class DNAParser():
         for classes in self.classes:
             self.classes[classes].destroy()
             
-
-        print self.classes
-            
-        #for nodes in self.models:
-            #self.models[nodes].removeNode()
+        #print self.classes

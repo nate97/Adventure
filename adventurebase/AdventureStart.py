@@ -121,13 +121,15 @@ class MyApp(ShowBase):
 
 
 
-    # Calculates where to place the player when he
-    # exits a tunnel
+    # Calculates where to place the player when he leaves a tunnel
     def positionCalculator(self, tunnel):
         # Get position of tunnel the player is exiting from
-        tunnelX = self.dnaParser.models[tunnel].getX()
-        tunnelY = self.dnaParser.models[tunnel].getY()
-        tunnelhpr = self.dnaParser.models[tunnel].getH()
+        
+        tunnelNode = render.find(tunnel)
+        
+        tunnelX = tunnelNode.getX()
+        tunnelY = tunnelNode.getY()
+        tunnelhpr = tunnelNode.getH()
         
         if tunnelhpr == 90:
             if self.player.getX() > tunnelX:

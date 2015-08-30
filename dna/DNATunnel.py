@@ -1,13 +1,13 @@
 from adventurebase.AdventureGlobals import *
-from DNADummy import *
+from DNANode import *
 
 from pandac.PandaModules import CollisionHandlerFloor, CollisionHandlerPusher, CollisionNode, CollisionSphere, CollisionTube, CollisionTraverser, BitMask32, CollisionRay, NodePath
 
 
-class DNATunnel(DNADummy):
+class DNATunnel(DNANode):
  
     def __init__(self, DNAParser):
-        DNADummy.__init__(self)
+        DNANode.__init__(self)
         
         # Call back to DNAParser
         self.DNAParser = DNAParser
@@ -24,8 +24,8 @@ class DNATunnel(DNADummy):
         self.nextroom = nextroom
         
         
-    def createNode(self):
-        # Tell DNADummy to create the dummy node now
+    def createDoor(self):
+        # Tell DNANode to create the dummy node now
         self.createDummy()
     
         # Set the collision geometry; we need first a CollisionNode

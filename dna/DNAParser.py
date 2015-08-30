@@ -1,7 +1,7 @@
 import sys
 import yaml
 
-from DNAModel import *
+from DNANode import *
 from DNATunnel import *
 from adventurebase.AdventureGlobals import *
 
@@ -115,11 +115,12 @@ class DNAParser():
             self.classes[name].setName(name)
             self.classes[name].setPos(pos)
             self.classes[name].setHpr(hpr)
+            self.classes[name].setScale(scale)
             self.classes[name].setExit(exittunnel)
             self.classes[name].setNextRoom(newroom)
             
             # Now we actually create the model
-            self.classes[name].createNode()
+            self.classes[name].createDoor()
                         
             
             
@@ -129,7 +130,7 @@ class DNAParser():
             # Setup all the properties this type of object needs first
             
             # TESTING THIS
-            self.classes[name] = DNAModel()
+            self.classes[name] = DNANode()
             
             self.classes[name].setType(type)
             self.classes[name].setName(name)
@@ -140,7 +141,7 @@ class DNAParser():
             self.classes[name].setColor(color)
             
             # Now we actually create the model
-            self.classes[name].createNode()
+            self.classes[name].createModel()
             
 
             # TEMPORARY
@@ -149,8 +150,8 @@ class DNAParser():
                 self.main.player.setColor(self.localColor)
 
 
-    ### THIS IS A HORRIBLY WAY TO DO THIS!!! ###
-    ### Destroys all nodes in the current room the player is in ###
+
+    ### Destroys all classes in the current room the player is in ###
     def destroyRoom(self):
 
         for classes in self.classes:
